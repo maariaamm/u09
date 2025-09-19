@@ -3,16 +3,17 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const admin = require('firebase-admin');
+const fs = require('fs');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Init Firebase admin with JSON in env
-if (!process.env.FIREBASE_SERVICE_ACCOUNT) {
-  console.warn('Missing FIREBASE_SERVICE_ACCOUNT env var - auth will fail');
+// Init Firebase admin with JSON file
+if (!process.env.FIREBASE_SERVICE_ACCOUNT_PATH) {
+  console.warn('Missing FIREBASE_SERVICE_ACCOUNT_PATH env var - auth will fail');
 } else {
-  const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+  const serviceAccount = JSON.parse(fs.readFileSync(process.env.FIREBASE_SERVICE_ACCOUNT_PATH));
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
   });
