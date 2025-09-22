@@ -1,21 +1,40 @@
-import Search from './pages/Search';
-import { AuthProvider } from './contexts/AuthContext';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Login from './pages/Login.jsx';
-import { Favorites } from './pages/Favorites';
-import { Link } from 'react-router-dom';
+import Search from "./pages/Search";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { BrowserRouter, Routes, Route, Link, useNavigate } from "react-router-dom";
+import Login from "./pages/Login.jsx";
+import { Favorites } from "./pages/Favorites";
 
+function NavBar() {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  return (
+    <nav style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
+      <Link to="/">Home</Link>
+      {user && (
+        <Link to="/login">Min profil</Link>
+      )}
+      {user ? (
+        <button onClick={async () => { await logout(); navigate("/"); }}>
+          Sign out
+        </button>
+      ) : (
+        <Link to="/login">Log in</Link>
+      )}
+    </nav>
+  );
+}
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-      <Link to="/login">Logga in</Link>
-      <Routes>
-        <Route path="/" element={<Search />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/favorites" element={<Favorites />} />
-      </Routes>
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<Search />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/favorites" element={<Favorites />} />
+        </Routes>
       </AuthProvider>
     </BrowserRouter>
   );

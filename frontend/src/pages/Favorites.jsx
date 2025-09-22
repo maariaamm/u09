@@ -23,15 +23,15 @@ export default function Favorites() {
     setFavs(prev => prev.filter(f => f._id !== id));
   };
 
-  if (!user) return <div>Logga in för att se favoriter</div>;
+  if (!user) return <div>You have to be logged in to view your favorite list</div>;
   return (
     <div>
-      <h2>Mina favoriter</h2>
+      <h2>MY favorites</h2>
       {favs.map(f => (
         <div key={f._id}>
           <img src={f.thumbnail} alt="" width="80" />
           <strong>{f.title}</strong>
-          <button onClick={() => remove(f._id)}>Ta bort</button>
+          <button onClick={() => remove(f._id)}>Delete</button>
         </div>
       ))}
     </div>

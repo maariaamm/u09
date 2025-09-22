@@ -1,14 +1,58 @@
-body {
+ body {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.button {
-  cursor: pointer;
-  background-color: #17601a;
-  color: rgb(16, 1, 1);
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+ 
+ nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h2, h3 {
+  color: #030d03;
+  padding: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+a {
+  text-decoration: none;
+  color: #000000;
+  font-size: 1.3rem;
+}
+
+input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
   font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+button {
+  cursor: pointer;
+  background-color: #d6e0d6;
+  padding: 15px
+  border-radius: 4px;
+  margin-left: 10px;
+  font-size: 11px;
+}
+
+img {
+  padding: 10px;
+  margin: 10px;
+  border-radius: 3px;
+  width: 230px;
+  height: auto;
+
+}
+strong {
+  margin-left: 35px;
+  border: 20px;
+  text-align: center;
+  color: #e2622c;
+  padding: 5px;
 }

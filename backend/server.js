@@ -6,8 +6,12 @@ const admin = require('firebase-admin');
 const fs = require('fs');
 
 const app = express();
-app.use(cors());
-app.use(express.json());
+app.use(cors({
+  origin: "*",
+  methods: ["*"],
+  allowedHeaders: ["*"],
+  "preflightContinue": true,
+}));app.use(express.json());
 
 // Init Firebase admin with JSON file
 if (!process.env.FIREBASE_SERVICE_ACCOUNT_PATH) {
