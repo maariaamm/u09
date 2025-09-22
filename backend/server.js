@@ -6,12 +6,9 @@ const admin = require('firebase-admin');
 const fs = require('fs');
 
 const app = express();
-app.use(cors({
-  origin: "*",
-  methods: ["*"],
-  allowedHeaders: ["*"],
-  "preflightContinue": true,
-}));app.use(express.json());
+app.use(cors(
+));
+app.use(express.json());
 
 // Init Firebase admin with JSON file
 if (!process.env.FIREBASE_SERVICE_ACCOUNT_PATH) {
@@ -32,5 +29,5 @@ app.get('/', (req,res) => res.send('Meal-app backend'));
 
 app.use('/api/favorites', require('./routes/favorites'));
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, ()=> console.log(`Server listening on ${PORT}`));
