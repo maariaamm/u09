@@ -11,8 +11,9 @@ function NavBar() {
   return (
     <nav style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
       <Link to="/">Home</Link>
+      <Link to="/favorites">Favorites</Link>
       {user && (
-        <Link to="/login">Min profil</Link>
+        <Link to="/login">My profile</Link>
       )}
       {user ? (
         <button onClick={async () => { await logout(); navigate("/"); }}>
@@ -33,7 +34,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Search />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/Favorites" element={<Favorites />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
