@@ -1,12 +1,10 @@
- /*body {
-  display: flex;
-  justify-content: center;
+ body {
+  display: grid;
+  grid-template-columns: column;  
   align-items: center;
 }
- */
-img {
-grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-}
+
+
 
  nav {
   display: flex;
@@ -14,12 +12,17 @@ grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   align-items: center;
 }
 
-h2, h3 {
+h2 {
   color: #030d03;
-  padding: 3px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+h3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem ;
 }
 a {
   text-decoration: none;
@@ -27,32 +30,15 @@ a {
   font-size: 1.1rem;
 }
 
-input {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.5rem;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
 button {
   cursor: pointer;
   background-color: #d6e0d6;
-  padding: 15px
+  padding: 15px;
   border-radius: 4px;
   margin-left: 10px;
   font-size: 11px;
 }
 
-img {
-  padding: 10px;
-  margin: 10px;
-  border-radius: 3px;
-  width: 230px;
-  height: auto;
-
-}
 strong {
   margin-left: 35px;
   border: 20px;
@@ -60,30 +46,8 @@ strong {
   color: #e2622c;
   padding: 5px;
 }
-/* Favorites layout */
-.favorites-container {
-  padding: 1rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
 
-.lists-panel {
-  min-width: 220px;
-  max-width: 300px;
-  border: 1px solid #eee;
-  padding: 12px;
-  border-radius: 8px;
-}
 
-.lists-panel ul { list-style: none; padding: 0; margin: 0; }
-.lists-panel li { padding: 8px; cursor: pointer; border-radius: 6px; margin-bottom: 6px; }
-.lists-panel li.active { background: #e6f2e6; font-weight: 600; }
-
-.favorites-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 kolumner på desktop */
-  gap: 1rem;
-}
 
 /* Anpassa vid olika breakpoints */
 @media (max-width: 1100px) {

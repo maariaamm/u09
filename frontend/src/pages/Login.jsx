@@ -12,11 +12,10 @@ export default function Login() {
     <div>
       {!user && <h1>Log in</h1>}
       {user ? (
-        <div>
+        <div style={{ textAlign: "center" }}>
           <p>Hello, {user.name || user.email}!</p>
-          <button onClick={logout}>Log out</button>
-          <br />
-          <button onClick={() => setShowFavs((v) => !v)}>My favorite recepies</button>
+          <button style={{marginTop: "1rem"}} onClick={logout}>Log out</button>
+          <button style={{marginTop: "1rem"}} onClick={() => setShowFavs((v) => !v)}>My favorite recepies</button>
 
           <Modal open={showFavs} onClose={() => setShowFavs(false)}>
             {/* Favorites component will render inside Modal */}
