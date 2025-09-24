@@ -27,7 +27,7 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser:true, useUnifiedTopo
 
 app.get('/', (req,res) => res.send('Meal-app backend'));
 
-app.use('/api/favorites', require('./routes/favorites'));
+app.use('/api/lists', require('./routes/list'));
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, ()=> console.log(`Server listening on ${PORT}`));

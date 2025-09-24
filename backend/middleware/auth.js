@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
   const token = header.split(' ')[1];
   try {
     const decoded = await admin.auth().verifyIdToken(token);
-    req.user = decoded; // decoded.uid finns
+    req.user = decoded; 
     next();
   } catch (err) {
     console.error('Auth error', err);
