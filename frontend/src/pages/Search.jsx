@@ -1,4 +1,3 @@
-// src/pages/Search.jsx
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import Modal from "../components/Modal";
@@ -67,8 +66,13 @@ export default function Search() {
 
   return (
     <div>
-      <h2>Search for a recipe</h2>
-      <h3>or maybe just the head ingredient?</h3>
+      <div style={{ padding: 20, display: "flex", flexDirection: "column", alignItems: "center", gap: 25, marginBottom: 12 }}>
+        <h2 style={{fontSize: 60}} className="heading">Discover Delicious Recipes</h2>
+        <div className="subtitle">
+          <h2 style={{fontSize: 36, margin: 0}}>Search for a recipe</h2>
+          <h3 style={{fontSize: 16, margin: 0}}>or maybe just the head ingredient?</h3>
+        </div>
+      </div>
 
       <div
         style={{
@@ -119,6 +123,7 @@ export default function Search() {
               flexDirection: "column",
               alignItems: "center",
             }}
+            className="card"
           >
             <img
               src={m.strMealThumb}
@@ -157,7 +162,7 @@ export default function Search() {
       {/* popup/modal */}
       {selectedMeal && (
         <Modal open={!!selectedMeal} onClose={() => setSelectedMeal(null)}>
-          <div style={{ minWidth: 300 }}>
+          <div style={{ minWidth: 300, maxWidth: 600, display: "flex", flexDirection: "column", alignItems: "center" }}>
             <h2>{selectedMeal.strMeal}</h2>
             <img
               src={selectedMeal.strMealThumb}

@@ -1,13 +1,6 @@
-// src/components/Modal.jsx
 import React from "react";
 
-/**
- * Enkel modal / overlay component.
- * Props:
- * - open: boolean
- * - onClose: function
- * - children
- */
+
 export default function Modal({ open, onClose, children }) {
   if (!open) return null;
   return (

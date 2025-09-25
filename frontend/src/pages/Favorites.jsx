@@ -7,10 +7,10 @@ const BACKEND = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
 export default function Favorites() {
   const [lists, setLists] = useState([]);
   const { user } = useAuth();
-  const [activeList, setActiveList] = useState(null); // den lista vi "gått in i"
+  const [activeList, setActiveList] = useState(null); 
   const [showModal, setShowModal] = useState(null);
   const [selectedMeal, setSelectedMeal] = useState(null);
-  const [editable, setEditable] = useState(null); // id för den lista som är i edit-mode
+  const [editable, setEditable] = useState(null); 
 
   const fetchRecipe = useCallback(() => {
     fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${showModal?.mealId}`)
@@ -114,7 +114,6 @@ export default function Favorites() {
     setLists((prev) => [...prev, newList]);
   };
 
-  // === Inuti en lista (ser ut som Favorites-sidan) ===
   if (activeList) {
     return (
       <div>
@@ -148,6 +147,7 @@ export default function Favorites() {
                     cursor: "pointer",
                   }}
                   onClick={() => setShowModal(r)}
+                  className="card"
                 >
                   <img
                     src={r.thumbnail}
@@ -168,25 +168,27 @@ export default function Favorites() {
           )}
         </div>
 
-        {/* Modal för recept-detaljer */}
+        {/* Modal */}
         {showModal && selectedMeal && (
           <Modal open={!!selectedMeal} onClose={() => setShowModal(null)}>
-            <h2>{selectedMeal.title}</h2>
-            <img
-              src={selectedMeal.thumbnail}
-              alt={selectedMeal.title}
-              style={{
-                width: "100%",
-                maxWidth: 300,
-                display: "block",
-                margin: "0 auto 12px",
-                borderRadius: 6,
-              }}
-            />
-            <p>
-              <strong>Instructions:</strong>
-            </p>
-            <p>{selectedMeal.instructions || "No instructions available"}</p>
+            <div style={{ minWidth: 300, maxWidth: 600, display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <h2>{selectedMeal.title}</h2>
+              <img
+                src={selectedMeal.thumbnail}
+                alt={selectedMeal.title}
+                style={{
+                  width: "100%",
+                  maxWidth: 200,
+                  display: "block",
+                  margin: "0 auto 12px",
+                  borderRadius: 6,
+                }}
+              />
+              <p>
+                <strong>Instructions:</strong>
+              </p>
+              <p>{selectedMeal.instructions || "No instructions available"}</p>
+            </div>
           </Modal>
         )}
         </div>
@@ -222,6 +224,7 @@ export default function Favorites() {
             <div
               key={l._id}
               style={{ height: "100%", padding: "1rem", flexDirection: "column", display: "flex", justifyContent: "center", alignItems: "center", gap: "0.5rem" }}
+              className="card"
             >
               <div style={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center", gap: "0.5rem" }}>
                 { editable === l._id && <input type="text" defaultValue={l.title} autoFocus={true} onBlur={(e) => handleOnBlur(e,l)} />}

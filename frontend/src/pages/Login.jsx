@@ -9,16 +9,16 @@ export default function Login() {
   const [showFavs, setShowFavs] = useState(false);
 
   return (
-    <div>
+    <div style={{ textAlign: "center" }}>
       {!user && <h1>Log in</h1>}
       {user ? (
-        <div style={{ textAlign: "center" }}>
+        <div>
           <p>Hello, {user.name || user.email}!</p>
           <button style={{marginTop: "1rem"}} onClick={logout}>Log out</button>
           <button style={{marginTop: "1rem"}} onClick={() => setShowFavs((v) => !v)}>My favorite recepies</button>
 
           <Modal open={showFavs} onClose={() => setShowFavs(false)}>
-            {/* Favorites component will render inside Modal */}
+            {/* modal component */}
             <Favorites open={true} onClose={() => setShowFavs(false)} />
           </Modal>
         </div>

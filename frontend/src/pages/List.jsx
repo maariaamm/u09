@@ -70,7 +70,7 @@ export default function List() {
           ))}
         </div>
 
-        {/* Modal för recept-detaljer */}
+        {/* Modal */}
         {selectedMeal && (
           <Modal open={!!selectedMeal} onClose={() => setSelectedMeal(null)}>
             <h2>{selectedMeal.title}</h2>
