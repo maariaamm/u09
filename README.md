@@ -19,7 +19,8 @@ Built with **React**, **node.js**,  **Express**, and **MongoDB**.
 
 ## 📸 preview from deployed version
 
-
+![](images/website.png)
+![](images/web2.png) 
 
 ---
 
@@ -49,4 +50,5 @@ Built with **React**, **node.js**,  **Express**, and **MongoDB**.
 ## 🔗 Links
 
 - [Figma design](https://www.figma.com/design/YgqQf3ciJxNeYmTYGmXfh8/Untitled?node-id=0-1&t=CWlGInNq1sJ6SkmY-1)
--
+
+- The deployed website - [meal-recipies](https://meal-recipies.netlify.app/)
