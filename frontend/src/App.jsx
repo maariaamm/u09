@@ -3,7 +3,6 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { BrowserRouter, Routes, Route, Link, useNavigate } from "react-router-dom";
 import Login from "./pages/Login.jsx";
 import { Favorites } from "./pages/Favorites";
-import List from "./pages/list.jsx";
 import "./App.css";
 
 function NavBar() {
@@ -37,7 +36,6 @@ function App() {
           <Route path="/" element={<Search />} />
           <Route path="/login" element={<Login />} />
           <Route path="/Favorites" element={<Favorites />} />
-          <Route path="/list/:id" element={<List />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
