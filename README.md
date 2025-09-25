@@ -1,6 +1,7 @@
 # 🍲 Meal DB
 
-A modern web application for **searching recipes**, **saving favorites**, and **organizing** them into **custom lists**.  
+A web app that makes it easy to **search**, **save**, and **organize** your favorite recipes in one place!  
+
 Built with **React**, **node.js**,  **Express**, and **MongoDB**.
 
 
@@ -17,7 +18,7 @@ Built with **React**, **node.js**,  **Express**, and **MongoDB**.
 
 ---
 
-## 📸 preview from deployed version
+## 📸 Preview from deployed version
 
 ![](images/website.png)
 ![](images/web2.png) 
