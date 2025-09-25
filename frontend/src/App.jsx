@@ -3,6 +3,8 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { BrowserRouter, Routes, Route, Link, useNavigate } from "react-router-dom";
 import Login from "./pages/Login.jsx";
 import { Favorites } from "./pages/Favorites";
+import List from "./pages/list.jsx";
+import "./App.css";
 
 function NavBar() {
   const { user, logout } = useAuth();
@@ -11,8 +13,9 @@ function NavBar() {
   return (
     <nav style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
       <Link to="/">Home</Link>
+      <Link to="/favorites">Favorites/Lists</Link>
       {user && (
-        <Link to="/login">Min profil</Link>
+        <Link to="/login">My profile</Link>
       )}
       {user ? (
         <button onClick={async () => { await logout(); navigate("/"); }}>
@@ -33,7 +36,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Search />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/Favorites" element={<Favorites />} />
+          <Route path="/list/:id" element={<List />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

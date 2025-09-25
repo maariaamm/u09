@@ -1,151 +1,183 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import Modal from "../components/Modal";
 
-const BACKEND = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+const BACKEND = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
 
 export default function Search() {
   const [q, setQ] = useState("");
   const [meals, setMeals] = useState([]);
   const [selectedMeal, setSelectedMeal] = useState(null);
   const { user } = useAuth();
+  const [lists, setLists] = useState([]);
+  const [searchLoading, setSearchLoading] = useState(false);
 
-  // Search after a recipe
+  useEffect(() => {
+    doSearch("");
+
+    if (user) {
+      fetch(`${BACKEND}/api/lists`, {
+        headers: { Authorization: "Bearer " + user.token },
+      })
+        .then((r) => r.json())
+        .then(setLists);
+    }
+  }, [user]);
+
   const doSearch = async (searchTerm = q) => {
+    setSearchLoading(true);
     try {
       const res = await fetch(
-        `https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(searchTerm)}`
+        `https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(
+          searchTerm
+        )}`
       );
       const data = await res.json();
       setMeals(data.meals || []);
     } catch (err) {
-      console.error("Fel vid hämtning från TheMealDB", err);
+      console.error("error fetching TheMealDB", err);
       setMeals([]);
+    } finally {
+      setSearchLoading(false);
     }
   };
 
-  useEffect(() => {
-    doSearch("");
-  }, []);
-
-  // Add to favorites
-  const save = async (meal) => {
+  const addToList = async (meal, listId) => {
     if (!user) return alert("Log in first");
-    try {
-      const res = await fetch(`${BACKEND}/api/favorites`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + user.token,
-        },
-        body: JSON.stringify({
-          mealId: meal.idMeal,
-          title: meal.strMeal,
-          thumbnail: meal.strMealThumb,
-        }),
-      });
+    if (!listId) return;
 
-      if (!res.ok) {
-        const errMsg = await res.json();
-        throw new Error(errMsg.msg || "something went wrong");
-      }
+    console.log("Adding to list", meal, listId);
+    const res = await fetch(`${BACKEND}/api/lists/${listId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + user.token,
+      },
+      body: JSON.stringify({
+        mealId: meal.idMeal, 
+        title: meal.strMeal,
+        thumbnail: meal.strMealThumb,
+      }),
+    });
 
-      const saved = await res.json();
-      alert("Saved!");
-
-      setMeals((prev) =>
-        prev.map((m) =>
-          m.idMeal === meal.idMeal ? { ...m, saved: true } : m
-        )
-      );
-    } catch (err) {
-      console.error(err);
-      alert("could not save" + err.message);
-    }
+    if (!res.ok) return alert("Could not add to list");
+    alert("Added to list!");
   };
 
   return (
     <div>
-      <h2>Search for a recipe</h2> 
-      <h3>or maybe just the head ingridient?</h3>
-      <input value={q} onChange={(e) => setQ(e.target.value)}
-      style={{ marginLeft: "550px" , padding: "10px", borderRadius: "4px", border: "1px solid #ccc", width: "300px" }} />
-      <button onClick={() => doSearch(q)}
-        style={{ padding: "5px 30px", marginTop: "10px", borderRadius: "4px", marginLeft:"670px"}}>Search</button>
+      <div style={{ padding: 20, display: "flex", flexDirection: "column", alignItems: "center", gap: 25, marginBottom: 12 }}>
+        <h2 style={{fontSize: 60}} className="heading">Discover Delicious Recipes</h2>
+        <div className="subtitle">
+          <h2 style={{fontSize: 36, margin: 0}}>Search for a recipe</h2>
+          <h3 style={{fontSize: 16, margin: 0}}>or maybe just the head ingredient?</h3>
+        </div>
+      </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 4fr))", gap: "1rem", marginTop: "1rem" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          width: "100%",
+          gap: 8,
+          alignItems: "center",
+          marginBottom: 12,
+        }}
+      >
+        <input
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          style={{
+            padding: "10px",
+            borderRadius: "4px",
+            border: "1px solid #ccc",
+            width: "300px",
+          }}
+        />
+        <button
+          onClick={() => doSearch(q)}
+          style={{ padding: "8px 16px", borderRadius: 4 }}
+        >
+          Search
+        </button>
+      </div>
+
+      {searchLoading && <div>Searching...</div>}
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+          gap: "1rem",
+          marginTop: "1rem",
+        }}
+      >
         {meals.map((m) => (
-          <div key={m.idMeal}>
-            <img  
+          <div
+            key={m.idMeal}
+            style={{
+              border: "1px solid #eee",
+              padding: 12,
+              borderRadius: 8,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+            className="card"
+          >
+            <img
               src={m.strMealThumb}
               alt={m.strMeal}
-            
-              style={{ cursor: "pointer" }}
+              style={{
+                cursor: "pointer",
+                width: "100%",
+                height: 140,
+                objectFit: "cover",
+                borderRadius: 6,
+              }}
               onClick={() => setSelectedMeal(m)}
             />
-            <strong>{m.strMeal}</strong>
-            <button
-              onClick={() => save(m)}
-              disabled={m.saved}
-            >
-              {m.saved ? "Saved" : "Add to favorites"}
-            </button>
+            <div style={{ marginTop: 8 }}>
+              <h3 style={{color: "orange"}}>{m.strMeal}</h3>
+            </div>
+            {lists.length > 0 && (
+              <div style={{ marginTop: 8 }}>
+                <select
+                  onChange={(e) => addToList(m, e.target.value)}
+                  defaultValue=""
+                >
+                  <option value="">Add to list...</option>
+                  {lists.map((l) => (
+                    <option key={l._id} value={l._id}>
+                      {l.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
         ))}
       </div>
 
       {/* popup/modal */}
       {selectedMeal && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: "rgba(0,0,0,0.5)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 1000,
-          }}
-          onClick={() => setSelectedMeal(null)}
-        >
-          <div
-            style={{
-              background: "#fff",
-              padding: "2rem",
-              borderRadius: "8px",
-              minWidth: "300px",
-              maxWidth: "90vw",
-              position: "relative",
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              style={{
-                position: "absolute",
-                top: 10,
-                right: 10,
-                fontSize: "1.2rem",
-                cursor: "pointer",
-              }}
-              onClick={() => setSelectedMeal(null)}
-            >
-              &times;
-            </button>
+        <Modal open={!!selectedMeal} onClose={() => setSelectedMeal(null)}>
+          <div style={{ minWidth: 300, maxWidth: 600, display: "flex", flexDirection: "column", alignItems: "center" }}>
             <h2>{selectedMeal.strMeal}</h2>
-            <img src={selectedMeal.strMealThumb} alt="" width="200" />
+            <img
+              src={selectedMeal.strMealThumb}
+              alt=""
+              width="200"
+              style={{ display: "block", marginBottom: 12 }}
+            />
             <p>
               <strong>Instructions:</strong>
             </p>
             <p style={{ maxHeight: 200, overflowY: "auto" }}>
               {selectedMeal.strInstructions}
             </p>
-            <button onClick={() => save(selectedMeal)}>
-              Add to favorites
-            </button>
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   );

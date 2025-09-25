@@ -1,54 +1,26 @@
 import { useAuth } from "../contexts/AuthContext";
 import "../index.css";
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
+import Modal from "../components/Modal";
+import Favorites from "./Favorites";
 
-const BACKEND = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
-
-function Login() {
+export default function Login() {
   const { user, login, logout } = useAuth();
-  const [favorites, setFavorites] = useState([]);
   const [showFavs, setShowFavs] = useState(false);
 
-  useEffect(() => {
-    const fetchFavorites = async () => {
-      if (user) {
-        const res = await fetch(`${BACKEND}/api/favorites`, {
-          headers: {
-            Authorization: "Bearer " + user.token,
-          },
-        });
-        const data = await res.json();
-        setFavorites(data);
-      }
-    };
-    fetchFavorites();
-  }, [user]);
-
   return (
-    <div>
+    <div style={{ textAlign: "center" }}>
       {!user && <h1>Log in</h1>}
       {user ? (
         <div>
-          <p>Hej, {user.name || user.email}!</p>
-          <button onClick={logout}>Logga ut</button>
-          <br />
-          <button onClick={() => setShowFavs((v) => !v)}>
-            My favorite recepies
-          </button>
-          {showFavs && (
-            <div style={{ marginTop: "1rem" }}>
-              {favorites.length === 0 ? (
-                <p>Your favorites list is empty.</p>
-              ) : (
-                favorites.map((fav) => (
-                  <div key={fav.mealId} style={{ marginBottom: "1rem" }}>
-                    <img src={fav.thumbnail} alt={fav.title} width={80} />
-                    <span style={{ marginLeft: 8 }}>{fav.title}</span>
-                  </div>
-                ))
-              )}
-            </div>
-          )}
+          <p>Hello, {user.name || user.email}!</p>
+          <button style={{marginTop: "1rem"}} onClick={logout}>Log out</button>
+          <button style={{marginTop: "1rem"}} onClick={() => setShowFavs((v) => !v)}>My favorite recepies</button>
+
+          <Modal open={showFavs} onClose={() => setShowFavs(false)}>
+            {/* modal component */}
+            <Favorites open={true} onClose={() => setShowFavs(false)} />
+          </Modal>
         </div>
       ) : (
         <div>
@@ -59,5 +31,3 @@ function Login() {
     </div>
   );
 }
-
-export default Login;
